@@ -164,6 +164,8 @@ def get_nodes_from_nodelist_json(json):
             nodes_out[n['id']] = node_out
         except KeyError:
             pass
+        except TypeError:
+            pass
     return nodes_out
 
 
