@@ -80,15 +80,18 @@ def get_nodes_from_ffmaps_urls(ffmaps_urls):
             response = requests.get(n, allow_redirects=True)
             if response.status_code == requests.codes.ok:
                 data = response.json()
-                nodes_json = data.get("nodes", None)
-                if type(nodes_json) == type(dict()):
-                    nodes = get_nodes_from_nodes_json(nodes_json)
-                    nodes_out.update(nodes)
-                elif type(nodes_json) == type(list()):
-                    nodes = get_nodes_from_nodes_json2(nodes_json)
-                    nodes_out.update(nodes)
+                if data is not None:
+                    nodes_json = data.get("nodes", None)
+                    if type(nodes_json) == type(dict()):
+                        nodes = get_nodes_from_nodes_json(nodes_json)
+                        nodes_out.update(nodes)
+                    elif type(nodes_json) == type(list()):
+                        nodes = get_nodes_from_nodes_json2(nodes_json)
+                        nodes_out.update(nodes)
+                    else:
+                        print("couldnt parse " + n)
                 else:
-                    print("couldnt parse " + n)
+                    print(n + " response is none")
             else:
                 print(n + " response status code: " +  str(response.status_code))
         # Downloading from URL failed
