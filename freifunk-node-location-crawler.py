@@ -1,9 +1,11 @@
 import requests, urllib.parse, os.path, json, time, sys
 
+TIMEOUT = 5
+
 
 def get_ff_api_urls():
     url = "https://raw.githubusercontent.com/freifunk/directory.api.freifunk.net/master/directory.json"
-    response = requests.get(url, allow_redirects=True)
+    response = requests.get(url, allow_redirects=True, timeout=TIMEOUT)
     if response.status_code == requests.codes.ok:
         data = response.json()
         ff_api_urls = list(data.values())
@@ -18,7 +20,7 @@ def get_map_urls(ff_api_urls):
     nodelist_urls = set()
     for api_url in ff_api_urls:
         try:
-            response = requests.get(api_url, allow_redirects=True)
+            response = requests.get(api_url, allow_redirects=True, timeout=TIMEOUT)
             if response.status_code == requests.codes.ok:
                 data = response.json()
                 nodeMaps = data.get("nodeMaps", None)
@@ -77,7 +79,7 @@ def get_nodes_from_ffmaps_urls(ffmaps_urls):
     nodes_out = {}
     for n in nodes_json_urls:
         try:
-            response = requests.get(n, allow_redirects=True)
+            response = requests.get(n, allow_redirects=True,timeout=TIMEOUT)
             if response.status_code == requests.codes.ok:
                 data = response.json()
                 if data is not None:
@@ -139,7 +141,7 @@ def get_nodes_from_nodelist_urls(nodelist_urls):
     nodes_out = {}
     for n in nodelist_urls:
         try:
-            response = requests.get(n, allow_redirects=True)
+            response = requests.get(n, allow_redirects=True, timeout=TIMEOUT)
             if response.status_code == requests.codes.ok:
                 data = response.json()
                 nodes = get_nodes_from_nodelist_json(data)

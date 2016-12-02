@@ -4,6 +4,7 @@ from threading import RLock, Thread
 
 NUMBER_OF_THREADS = 4
 FF_API_DIRECTORY_URL = "https://raw.githubusercontent.com/freifunk/directory.api.freifunk.net/master/directory.json"
+TIMEOUT = 5
 
 class UrlSet(object):
     def __init__(self, urls = None):
@@ -65,7 +66,7 @@ class NodeDict(object):
 
 def get_ff_api_urls(logger):
 
-    response = requests.get(FF_API_DIRECTORY_URL , allow_redirects=True)
+    response = requests.get(FF_API_DIRECTORY_URL , allow_redirects=True, timeout=TIMEOUT)
     if response.status_code == requests.codes.ok:
         data = response.json()
         ff_api_urls = set(data.values())
@@ -81,7 +82,7 @@ def get_map_urls(ff_api_urls, logger, ff_urls, nodelist_urls):
     api_url = ff_api_urls.getUrl()
     while api_url is not None:
         try:
-            response = requests.get(api_url, allow_redirects=True)
+            response = requests.get(api_url, allow_redirects=True, timeout=TIMEOUT)
             if response.status_code == requests.codes.ok:
                 data = response.json()
                 nodeMaps = data.get("nodeMaps", None)
@@ -148,7 +149,7 @@ def get_nodes_from_nodes_json_urls(nodes_json_urls, nodes_out, logger):
     url = nodes_json_urls.getUrl()
     while url is not None:
         try:
-            response = requests.get(url, allow_redirects=True)
+            response = requests.get(url, allow_redirects=True, timeout=TIMEOUT)
             if response.status_code == requests.codes.ok:
                 data = response.json()
                 if data is not None:
@@ -209,7 +210,7 @@ def get_nodes_from_nodelist_urls(nodelist_urls, nodes_out, logger):
     url = nodelist_urls.getUrl()
     while url is not None:
         try:
-            response = requests.get(url, allow_redirects=True)
+            response = requests.get(url, allow_redirects=True, timeout=TIMEOUT)
             if response.status_code == requests.codes.ok:
                 data = response.json()
                 nodes = get_nodes_from_nodelist_json(data)
