@@ -177,7 +177,7 @@ def write_json_to_file(data):
         json.dump(data, outfile)
 
 
-start_time = time.clock()
+start_time = time.perf_counter()
 
 # Get urls of the community api files from the api directory
 ff_api_urls = get_ff_api_urls()
@@ -193,6 +193,6 @@ data['timestamp'] = int(time.time())
 data['nodes'] = nodes
 write_json_to_file(data)
 
-end_time = time.clock()
+end_time = time.perf_counter()
 duration = end_time - start_time
 print('Elapsed time: ' + str(duration))

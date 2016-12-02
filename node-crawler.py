@@ -246,7 +246,7 @@ def write_json_to_file(data):
         json.dump(data, outfile)
 
 def main():
-    start_time = time.clock()
+    start_time = time.perf_counter()
 
     # Setup logger
     log_to_console = '-p' in sys.argv
@@ -299,7 +299,7 @@ def main():
     data['nodes'] = nodes_out
     write_json_to_file(data)
 
-    end_time = time.clock()
+    end_time = time.perf_counter()
     duration = end_time - start_time
     logger.log('Elapsed time: ' + str(duration))
 
